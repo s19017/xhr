@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const Greeting = props => <li>{props.type}</li>
+
+class App extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = { data: [] }
+  }
+
+  render () {
+    const greetings = this.state.data.map((v, i) => (
+      <Greeting type={v} key={i} />
+    ))
+
+    return <ul>{greetings}</ul>
+  }
+
+  componentDidMount () {
+    fetch('./messages.json')
+      .then(res => res.json())
+      .then(json => json.messages)
+      .then(json => this.setState({ data: json }))
+  }
 }
 
-export default App;
+export default App
